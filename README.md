@@ -3,7 +3,7 @@
 [![Google Cloud](https://img.shields.io/badge/Google%20Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)](https://cloud.google.com)
 [![Skills Boost](https://img.shields.io/badge/Skills%20Boost-Active-success?style=for-the-badge)](https://www.cloudskillsboost.google/)
 [![Labs](https://img.shields.io/badge/Labs-In%20Progress-orange?style=for-the-badge)](https://github.com/KingsukMajumdar/skill-develop-google-arcade)
-
+[![YouTube](https://img.shields.io/badge/YouTube-FFFFFF?style=flat&logo=YouTube&logoColor=red)](https://www.youtube.com/@LearnWithKingsuk) [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white)](https://github.com/KingsukMajumdar)
 ---
 
 ## 📖 About This Repository
@@ -29,57 +29,13 @@ This repository contains comprehensive solutions, scripts, and documentation for
 
 | **Sl No** | **Lab Name** | **Lab Code** | **Google Lab Link** | **Repository Documentation** |
 |:---------:|:-------------|:------------:|:-------------------:|:----------------------------:|
-| 1 | IAM Custom Roles | GSP190 | [🔗 Launch Lab](https://www.cloudskillsboost.google/focuses/1035) | [📄 read_GSP190.md](./GSP190/read_GSP190.md) |
+| 1 | IAM Custom Roles | GSP190 | [🔗 Launch Lab](https://www.skills.google/games/6874/labs/42691) | [📄 readGSP190.md](./GSP190/readGSP190.md) |
 | 2 | *Coming Soon* | GSP*** | [🔗 Launch Lab](#) | [📄 Documentation](#) |
 | 3 | *Coming Soon* | GSP*** | [🔗 Launch Lab](#) | [📄 Documentation](#) |
 | 4 | *Coming Soon* | GSP*** | [🔗 Launch Lab](#) | [📄 Documentation](#) |
 | 5 | *Coming Soon* | GSP*** | [🔗 Launch Lab](#) | [📄 Documentation](#) |
 
 > **Note:** This table will be continuously updated as more labs are completed and documented.
-
----
-
-## 🗂️ Repository Structure
-
-```
-skill-develop-google-arcade/
-├── README.md                    # This master documentation file
-├── GSP190/                      # IAM Custom Roles Lab
-│   ├── gsp190.sh               # Automation script
-│   ├── read_GSP190.md          # Detailed lab documentation
-│   └── OUTPUT/                 # Generated files during execution
-├── GSP***/                      # Future lab directories
-│   ├── script.sh
-│   ├── read_GSP***.md
-│   └── OUTPUT/
-└── LICENSE                      # Repository license
-```
-
----
-
-## 🚀 Quick Start Guide
-
-### **General Usage Pattern for All Labs:**
-
-1. **Navigate to lab directory**
-   ```bash
-   cd GSP***
-   ```
-
-2. **Download the script**
-   ```bash
-   curl -LO raw.githubusercontent.com/KingsukMajumdar/skill-develop-google-arcade/main/GSP***/script.sh
-   ```
-
-3. **Make executable**
-   ```bash
-   chmod +x script.sh
-   ```
-
-4. **Execute**
-   ```bash
-   ./script.sh
-   ```
 
 > **💡 Tip:** Always read the lab-specific documentation (`read_GSP***.md`) before executing scripts.
 
@@ -159,10 +115,13 @@ Contributions, suggestions, and feedback are welcome!
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
+## 🙏 Thank Ypu 
+Mr. RUPAK CHATTERJEE, Mr. SUBHA SARKAR and et.al 
+---
 
 ## 👨‍🏫 Author
 
-**Dr. Kingsuk Majumdar**  
+**Kingsuk Majumdar, Ph. D (Engg)**  
 Assistant Professor  
 Department of Electrical Engineering  
 Dr. B. C. Roy Engineering College, Durgapur
@@ -191,18 +150,6 @@ If you find these labs helpful:
 
 ---
 
-## 📊 Progress Tracker
-
-| **Category** | **Completed** | **In Progress** | **Planned** |
-|:-------------|:-------------:|:---------------:|:-----------:|
-| IAM & Security | 1 | 0 | 5 |
-| Compute | 0 | 0 | 3 |
-| Storage | 0 | 0 | 4 |
-| Networking | 0 | 0 | 3 |
-| Data & Analytics | 0 | 0 | 2 |
-| **Total** | **1** | **0** | **17** |
-
----
 
 ## 🔗 Useful Resources
 
@@ -265,10 +212,10 @@ After exploring these labs:
 
 ---
 
-**Made with ❤️ by Dr. Kingsuk Majumdar**  
+**Made with ❤️ by Kingsuk Majumdar**  
 **© 2025 All Rights Reserved**
 
 [![GitHub followers](https://img.shields.io/github/followers/KingsukMajumdar?style=social)](https://github.com/KingsukMajumdar)
-[![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UC_CHANNEL_ID?style=social)](https://youtube.com/@LearnWithKingsuk)
+[![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCo2Rho6ypq7IkxaKwByWQRA?style=social)](https://youtube.com/@LearnWithKingsuk)
 
 </div>
