@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 # Code URL: https://www.skills.google/games/6875/labs/42698
 # Lab Code: GSP080
