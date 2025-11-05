@@ -15,6 +15,9 @@ In google console copy and paste the following command ( before executing read t
 curl -LO raw.githubusercontent.com/KingsukMajumdar/skill-develop-google-arcade/main/GSP080/gsp080.sh
 sudo chmod +x gsp080.sh && ./gsp080.sh
 ```
+## Note:
+> [!CAUTION]
+> $${\color{red}\text{If you get a service account serviceAccountTokenCreator notification select "n".}}$$
 ## OR
 
 ### 📥 Step 1: Download
