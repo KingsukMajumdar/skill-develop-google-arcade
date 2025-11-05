@@ -107,7 +107,7 @@ Assistant Professor, Department of Electrical Engineering
 Dr. B. C. Roy Engineering College, Durgapur
 
 
-🙏🏻 Thank You: **Mr. RUPAK CHATTERJEE**, **Mr. SUBHA SARKAR** etc **all of you**   
+🙏🏻 Thank You: **Mr. RUPAK CHATTERJEE** , **Mr. SUBHA SARKAR** and **et.al**  
 🌐 GitHub: [@KingsukMajumdar](https://github.com/KingsukMajumdar)  
 📺 YouTube: [Learn With Kingsuk](https://youtube.com/@LearnWithKingsuk)
 
