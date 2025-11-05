@@ -22,7 +22,8 @@ export REGION=us-east1
 In google console copy and paste the following command (before executing read the code carefully [gsp644.sh](https://github.com/KingsukMajumdar/skill-develop-google-arcade/blob/main/GSP644/gsp644.sh))
 ```bash
 curl -LO raw.githubusercontent.com/KingsukMajumdar/skill-develop-google-arcade/main/GSP644/gsp644.sh
-sudo chmod +x gsp644.sh && ./gsp644.sh
+sudo chmod +x gsp644.sh
+./gsp644.sh
 ```
 ## OR
 
@@ -108,6 +109,52 @@ gcloud run services get-iam-policy pdf-converter --platform managed --region $RE
 ```bash
 gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=pdf-converter" --limit 50
 ```
+
+## 🧪 Manual Testing (After Script Completion)
+
+### Test 1: Verify Service Deployment
+```bash
+curl -X POST -H "Authorization: Bearer $(gcloud auth print-identity-token)" $SERVICE_URL
+```
+**Expected Response:** `OK`
+
+### Test 2: Upload Files with Delay Script
+```bash
+cat <<'EOF' > copy_files.sh
+#!/bin/bash
+
+SOURCE_BUCKET="gs://spls/gsp644"
+DESTINATION_BUCKET="gs://${GOOGLE_CLOUD_PROJECT}-upload"
+DELAY=5
+
+# Get a list of files in the source bucket
+files=$(gsutil ls "$SOURCE_BUCKET")
+
+# Loop through the files
+for file in $files; do
+  source_file_path="$file"
+  gsutil cp "$source_file_path" "$DESTINATION_BUCKET"
+  
+  if [ $? -eq 0 ]; then
+    echo "Copied: $source_file_path to $DESTINATION_BUCKET"
+  else
+    echo "Failed to copy: $source_file_path"
+  fi
+  
+  sleep $DELAY
+done
+
+echo "All files copied!"
+EOF
+
+bash copy_files.sh
+```
+
+### Test 3: Verify PDF Conversion
+1. Navigate to Cloud Storage in Console
+2. Check `[PROJECT_ID]-upload` bucket (files disappear as converted)
+3. Check `[PROJECT_ID]-processed` bucket (PDF files appear)
+4. Download and verify PDF files
 
 ## 📚 Resources
 
