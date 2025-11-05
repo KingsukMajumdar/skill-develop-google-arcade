@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 # -*- coding: utf-8 -*-
 # Code URL: https://www.skills.google/games/6875/labs/42698
 # Lab Code: GSP080
@@ -51,8 +51,8 @@ echo "${YELLOW}${BOLD}Starting${RESET}" "${GREEN}${BOLD}Execution${RESET}"
 #═══════════════════════════════════════════════════════════════════════════════
 
 # Set the default region for Cloud Run functions
-# Using us-central1 as the default region for this lab
-export REGION="${REGION:-us-central1}"
+# Using us-west1 as the default region for this lab
+export REGION="${REGION:-us-west1}"
 gcloud config set run/region $REGION
 
 #═══════════════════════════════════════════════════════════════════════════════
