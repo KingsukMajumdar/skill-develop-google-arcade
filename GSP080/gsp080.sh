@@ -11,7 +11,7 @@
 # Written on: 05-Nov-2025
 # Revision Date: 05-Nov-2025
 # Author: Kingsuk Majumdar
-# MIT License  2025 Kingsuk Majumdar
+# Copyright (c) 2025 Kingsuk Majumdar
 #
 # Aphorism: "Code is like humor. When you have to explain it, it's bad." - Cory House
 
@@ -51,7 +51,8 @@ echo "${YELLOW}${BOLD}Starting${RESET}" "${GREEN}${BOLD}Execution${RESET}"
 #═══════════════════════════════════════════════════════════════════════════════
 
 # Set the default region for Cloud Run functions
-# This ensures all subsequent commands use the specified region
+# Using us-central1 as the default region for this lab
+export REGION="${REGION:-us-central1}"
 gcloud config set run/region $REGION
 
 #═══════════════════════════════════════════════════════════════════════════════
