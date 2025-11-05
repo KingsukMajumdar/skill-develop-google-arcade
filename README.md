@@ -30,7 +30,7 @@ This repository contains comprehensive solutions, scripts, and documentation for
 | **Sl No** | **Lab Name** | **Lab Code** | **Google Lab Link** | **Repository Documentation** |
 |:---------:|:-------------|:------------:|:-------------------:|:----------------------------:|
 | 1 | IAM Custom Roles | GSP190 | [🔗 Launch Lab](https://www.skills.google/games/6874/labs/42691) | [📄 readGSP190.md](./GSP190/readGSP190.md) |
-| 2 | *Coming Soon* | GSP*** | [🔗 Launch Lab](#) | [📄 Documentation](#) |
+| 2 | Cloud Run Functions: Qwik Start - Command Line | GSP080 | [🔗 Launch Lab](https://www.skills.google/games/6875/labs/42698) | [📄 readGSP080.md](./GSP190/readGSP190.md) |
 | 3 | *Coming Soon* | GSP*** | [🔗 Launch Lab](#) | [📄 Documentation](#) |
 | 4 | *Coming Soon* | GSP*** | [🔗 Launch Lab](#) | [📄 Documentation](#) |
 | 5 | *Coming Soon* | GSP*** | [🔗 Launch Lab](#) | [📄 Documentation](#) |
@@ -174,6 +174,7 @@ If you find these labs helpful:
 
 | **Date** | **Update** | **Description** |
 |:---------|:-----------|:----------------|
+| Nov 2025 | Initial Release | Repository created with GSP080 lab |
 | Nov 2025 | Initial Release | Repository created with GSP190 lab |
 | Nov 2025 | Documentation | Added comprehensive README and lab docs |
 | *Future* | New Labs | Additional lab solutions coming soon |
