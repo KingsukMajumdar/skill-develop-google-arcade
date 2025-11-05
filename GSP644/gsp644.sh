@@ -44,14 +44,18 @@ main() {
         exit 1
     fi
 
-    # Step 1: Get region from user
-    print_message "$YELLOW" "Step 1: Setting up environment variables"
-    read -p "Enter your REGION (e.g., us-east1, us-central1): " REGION
-    export REGION
-    
-    if [[ -z "$REGION" ]]; then
-        print_message "$RED" "Error: REGION cannot be empty"
-        exit 1
+    # Check if REGION is already set
+    if [[ -z "${REGION:-}" ]]; then
+        print_message "$YELLOW" "Step 1: Setting up environment variables"
+        read -p "Enter your REGION (e.g., us-east1, us-central1): " REGION
+        export REGION
+        
+        if [[ -z "$REGION" ]]; then
+            print_message "$RED" "Error: REGION cannot be empty"
+            exit 1
+        fi
+    else
+        print_message "$GREEN" "✓ Using existing REGION: $REGION"
     fi
     
     print_message "$GREEN" "✓ Region set to: $REGION"
@@ -120,6 +124,7 @@ main() {
         --platform managed \
         --region $REGION \
         --format="value(status.url)")
+    export SERVICE_URL
     echo "Service URL: $SERVICE_URL"
     echo
 
@@ -277,8 +282,9 @@ EOF_END
     print_message "$GREEN" "✓ Docker image rebuilt"
     echo
 
-    # Step 20: Redeploy Cloud Run service
+    # Step 20: Redeploy Cloud Run service with final configuration
     print_message "$YELLOW" "Step 20: Redeploying Cloud Run service with final configuration..."
+    print_message "$YELLOW" "This build will take longer due to LibreOffice. Please wait..."
     gcloud run deploy pdf-converter \
         --image gcr.io/$GOOGLE_CLOUD_PROJECT/pdf-converter \
         --platform managed \
@@ -289,6 +295,13 @@ EOF_END
         --set-env-vars PDF_BUCKET=$GOOGLE_CLOUD_PROJECT-processed \
         --quiet
     print_message "$GREEN" "✓ Final deployment completed"
+    echo
+
+    # Step 21: Final verification
+    print_message "$YELLOW" "Step 21: Final service verification..."
+    curl -X POST -H "Authorization: Bearer $(gcloud auth print-identity-token)" $SERVICE_URL
+    echo
+    print_message "$GREEN" "✓ Service responding correctly"
     echo
 
     # Final summary
@@ -303,6 +316,8 @@ EOF_END
     echo
     print_message "$GREEN" "✓ Lab GSP644 completed successfully!"
     print_message "$YELLOW" "Note: PDF conversion will happen automatically when files are uploaded to the upload bucket."
+    echo
+    print_message "$CYAN" "To test with delayed file upload, run the copy_files.sh script (see README for details)"
 }
 
 # Execute main function
