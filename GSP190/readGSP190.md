@@ -9,6 +9,8 @@
 ## LAB ID: GSP190
 ## LAB NAME: [IAM Custom Roles](https://www.skills.google/games/6874/labs/42691)
 ## 🚀 Quick Start
+
+In google console copy and paste the following command ( before executing read the code carefully [gsp190.sh](https://github.com/KingsukMajumdar/skill-develop-google-arcade/blob/main/GSP190/gsp190.sh))
 ```bash
 curl -LO raw.githubusercontent.com/KingsukMajumdar/skill-develop-google-arcade/main/GSP190/gsp190.sh
 sudo chmod +x gsp190.sh && ./gsp190.sh
