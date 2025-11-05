@@ -4,7 +4,7 @@
 # Purpose: Automate the deployment of a serverless PDF converter using Cloud Run
 # Compiler: bash 5.x
 # OS: Manjaro Linux / Cloud Shell
-# Version: V1
+# Version: V1.1
 # Written on: 05-11-2025
 # Revision Date: 05-11-2025
 # Author: Kingsuk Majumdar
@@ -18,6 +18,7 @@ set -euo pipefail
 readonly RED='\033[0;31m'
 readonly GREEN='\033[0;32m'
 readonly YELLOW='\033[1;33m'
+readonly CYAN='\033[0;36m'
 readonly NC='\033[0m' # No Color
 
 # Function to print colored output
@@ -72,12 +73,16 @@ main() {
     gcloud auth list
     echo
 
-    # Step 3: Enable Cloud Run API
-    print_message "$YELLOW" "Step 3: Resetting Cloud Run API..."
+    # Step 3: Enable Required APIs
+    print_message "$YELLOW" "Step 3: Enabling required APIs..."
     gcloud services disable run.googleapis.com --quiet 2>/dev/null || true
     gcloud services enable run.googleapis.com
+    gcloud services enable pubsub.googleapis.com
+    gcloud services enable cloudbuild.googleapis.com
+    gcloud services enable storage-api.googleapis.com
+    print_message "$YELLOW" "Waiting 30 seconds for API propagation..."
     sleep 30
-    print_message "$GREEN" "✓ Cloud Run API enabled"
+    print_message "$GREEN" "✓ Required APIs enabled"
     echo
 
     # Step 4: Clone repository
@@ -149,7 +154,8 @@ main() {
 
     # Step 12: Create Pub/Sub notification
     print_message "$YELLOW" "Step 12: Creating Pub/Sub notification..."
-    gsutil notification create -t new-doc -f json -e OBJECT_FINALIZE gs://$GOOGLE_CLOUD_PROJECT-upload
+    gsutil notification create -t new-doc -f json -e OBJECT_FINALIZE gs://$GOOGLE_CLOUD_PROJECT-upload 2>/dev/null || \
+        print_message "$YELLOW" "Notification already exists"
     print_message "$GREEN" "✓ Pub/Sub notification created"
     echo
 
@@ -163,6 +169,8 @@ main() {
 
     # Step 14: Grant IAM permissions
     print_message "$YELLOW" "Step 14: Granting IAM permissions..."
+    
+    # Grant Cloud Run invoker role
     gcloud run services add-iam-policy-binding pdf-converter \
         --member=serviceAccount:pubsub-cloud-run-invoker@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com \
         --role=roles/run.invoker \
@@ -170,11 +178,35 @@ main() {
         --region $REGION \
         --quiet
     
+    # Get project number
     PROJECT_NUMBER=$(gcloud projects describe $GOOGLE_CLOUD_PROJECT --format='value(projectNumber)')
+    
+    # Wait for Pub/Sub service account to be created
+    print_message "$YELLOW" "Waiting for Pub/Sub service account initialization..."
+    sleep 10
+    
+    # Check if Pub/Sub service account exists, if not wait and retry
+    PUBSUB_SA="service-${PROJECT_NUMBER}@gcp-sa-pubsub.iam.gserviceaccount.com"
+    MAX_RETRIES=5
+    RETRY_COUNT=0
+    
+    while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+        if gcloud iam service-accounts describe $PUBSUB_SA --project=$GOOGLE_CLOUD_PROJECT >/dev/null 2>&1; then
+            print_message "$GREEN" "✓ Pub/Sub service account found"
+            break
+        else
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            print_message "$YELLOW" "Waiting for Pub/Sub service account (attempt $RETRY_COUNT/$MAX_RETRIES)..."
+            sleep 5
+        fi
+    done
+    
+    # Grant token creator role
     gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
-        --member=serviceAccount:service-$PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com \
+        --member=serviceAccount:$PUBSUB_SA \
         --role=roles/iam.serviceAccountTokenCreator \
         --quiet
+    
     print_message "$GREEN" "✓ IAM permissions granted"
     echo
 
@@ -188,14 +220,14 @@ main() {
     print_message "$GREEN" "✓ Pub/Sub subscription created"
     echo
 
-    # Step 16: Copy test files
-    print_message "$YELLOW" "Step 16: Copying test files to upload bucket..."
+    # Step 16: Copy test files (initial batch)
+    print_message "$YELLOW" "Step 16: Copying initial test files to upload bucket..."
     gsutil -m cp gs://spls/gsp644/* gs://$GOOGLE_CLOUD_PROJECT-upload
-    print_message "$GREEN" "✓ Test files copied"
+    print_message "$GREEN" "✓ Initial test files copied"
     echo
 
     # Step 17: Create Dockerfile
-    print_message "$YELLOW" "Step 17: Creating Dockerfile..."
+    print_message "$YELLOW" "Step 17: Creating Dockerfile with LibreOffice..."
     cat > Dockerfile <<'EOF_END'
 FROM node:20
 RUN apt-get update -y \
@@ -211,7 +243,7 @@ EOF_END
     echo
 
     # Step 18: Create index.js
-    print_message "$YELLOW" "Step 18: Creating index.js with LibreOffice integration..."
+    print_message "$YELLOW" "Step 18: Creating index.js with PDF conversion logic..."
     cat > index.js <<'EOF_END'
 const {promisify} = require('util');
 const {Storage}   = require('@google-cloud/storage');
@@ -278,13 +310,14 @@ EOF_END
 
     # Step 19: Rebuild Docker image
     print_message "$YELLOW" "Step 19: Rebuilding Docker image with LibreOffice..."
+    print_message "$CYAN" "This may take a few minutes. Please wait..."
     gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/pdf-converter
     print_message "$GREEN" "✓ Docker image rebuilt"
     echo
 
     # Step 20: Redeploy Cloud Run service with final configuration
     print_message "$YELLOW" "Step 20: Redeploying Cloud Run service with final configuration..."
-    print_message "$YELLOW" "This build will take longer due to LibreOffice. Please wait..."
+    print_message "$CYAN" "This deployment includes LibreOffice and will take longer. Please wait..."
     gcloud run deploy pdf-converter \
         --image gcr.io/$GOOGLE_CLOUD_PROJECT/pdf-converter \
         --platform managed \
@@ -297,27 +330,69 @@ EOF_END
     print_message "$GREEN" "✓ Final deployment completed"
     echo
 
-    # Step 21: Final verification
+    # Step 21: Final service verification
     print_message "$YELLOW" "Step 21: Final service verification..."
-    curl -X POST -H "Authorization: Bearer $(gcloud auth print-identity-token)" $SERVICE_URL
+    RESPONSE=$(curl -s -X POST -H "Authorization: Bearer $(gcloud auth print-identity-token)" $SERVICE_URL)
+    echo "Response: $RESPONSE"
+    
+    if [[ "$RESPONSE" == *"OK"* ]]; then
+        print_message "$GREEN" "✓ Service responding correctly"
+    else
+        print_message "$YELLOW" "⚠ Service responded but check logs if needed"
+    fi
     echo
-    print_message "$GREEN" "✓ Service responding correctly"
+
+    # Step 22: Create copy_files.sh script for testing
+    print_message "$YELLOW" "Step 22: Creating copy_files.sh for delayed file upload testing..."
+    cat > ~/copy_files.sh <<'EOF_END'
+#!/bin/bash
+
+SOURCE_BUCKET="gs://spls/gsp644"
+DESTINATION_BUCKET="gs://${GOOGLE_CLOUD_PROJECT}-upload"
+DELAY=5
+
+# Get a list of files in the source bucket
+files=$(gsutil ls "$SOURCE_BUCKET")
+
+# Loop through the files
+for file in $files; do
+  source_file_path="$file"
+  gsutil cp "$source_file_path" "$DESTINATION_BUCKET"
+  
+  if [ $? -eq 0 ]; then
+    echo "Copied: $source_file_path to $DESTINATION_BUCKET"
+  else
+    echo "Failed to copy: $source_file_path"
+  fi
+  
+  sleep $DELAY
+done
+
+echo "All files copied!"
+EOF_END
+    chmod +x ~/copy_files.sh
+    print_message "$GREEN" "✓ copy_files.sh created in home directory"
     echo
 
     # Final summary
     print_message "$GREEN" "=========================================="
-    print_message "$GREEN" "Deployment Summary"
+    print_message "$GREEN" "         Deployment Summary"
     print_message "$GREEN" "=========================================="
     echo "Service URL: $SERVICE_URL"
     echo "Upload Bucket: gs://$GOOGLE_CLOUD_PROJECT-upload"
     echo "Processed Bucket: gs://$GOOGLE_CLOUD_PROJECT-processed"
     echo "Region: $REGION"
+    echo "Test Script: ~/copy_files.sh"
     print_message "$GREEN" "=========================================="
     echo
     print_message "$GREEN" "✓ Lab GSP644 completed successfully!"
-    print_message "$YELLOW" "Note: PDF conversion will happen automatically when files are uploaded to the upload bucket."
     echo
-    print_message "$CYAN" "To test with delayed file upload, run the copy_files.sh script (see README for details)"
+    print_message "$CYAN" "📝 Next Steps:"
+    print_message "$YELLOW" "1. Run: bash ~/copy_files.sh (to upload files with delay)"
+    print_message "$YELLOW" "2. Check upload bucket: gsutil ls gs://$GOOGLE_CLOUD_PROJECT-upload"
+    print_message "$YELLOW" "3. Check processed bucket: gsutil ls gs://$GOOGLE_CLOUD_PROJECT-processed"
+    print_message "$YELLOW" "4. View logs: gcloud logging read \"resource.type=cloud_run_revision\" --limit 20"
+    echo
 }
 
 # Execute main function
