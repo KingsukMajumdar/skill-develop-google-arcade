@@ -37,7 +37,7 @@ This repository contains comprehensive solutions, scripts, and documentation for
 
 > **Note:** This table will be continuously updated as more labs are completed and documented.
 
-> **💡 Tip:** Always read the lab-specific documentation (`read_GSP***.md`) before executing scripts.
+> **💡 Tip:** Always read the lab-specific documentation (`readGSP***.md`) before executing scripts.
 
 ---
 
@@ -115,7 +115,7 @@ Contributions, suggestions, and feedback are welcome!
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-## 🙏 Thank Ypu 
+## 🙏 Thank You 
 Mr. RUPAK CHATTERJEE, Mr. SUBHA SARKAR and et.al 
 ---
 
