@@ -32,7 +32,7 @@ This repository contains comprehensive solutions, scripts, and documentation for
 | 1 | IAM Custom Roles | GSP190 | [🔗 Launch Lab](https://www.skills.google/games/6874/labs/42691) | [📄 readGSP190.md](./GSP190/readGSP190.md) |
 | 2 | Cloud Run Functions: Qwik Start - Command Line | GSP080 | [🔗 Launch Lab](https://www.skills.google/games/6875/labs/42698) | [📄 readGSP080.md](./GSP080/readGSP080.md) |
 | 3 | Build a Serverless App with Cloud Run that Creates PDF Files | GSP644 | [🔗 Launch Lab](https://www.skills.google/games/6875/labs/42699) | [📄 readGSP644.md](./GSP644/readGSP644.md) |
-| 4 | *Coming Soon* | GSP*** | [🔗 Launch Lab](#) | [📄 Documentation](#) |
+| 4 | Cloud Monitoring: Qwik Start | GSP089 | [🔗 Launch Lab](https://www.skills.google/games/6876/labs/42703) | [📄 *Commming Soon*](#) |
 | 5 | *Coming Soon* | GSP*** | [🔗 Launch Lab](#) | [📄 Documentation](#) |
 
 > **Note:** This table will be continuously updated as more labs are completed and documented.
