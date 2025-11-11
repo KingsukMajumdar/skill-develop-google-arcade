@@ -116,7 +116,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 ## 🙏 Thank You 
-Mr. RUPAK CHATTERJEE, Mr. SUBHA SARKAR and et.al 
+Mr. RUPAK CHATTERJEE, Mr. SUBHA SARKAR and Mr. Debayan Laha, Mr. Chanchal Bhattacharya, Mr Akash Mukherjee, Mr. Surjendu Mukherjee, Mr Tirtha Mondal and Mr Abir Kumar Laha et.all
 ---
 
 ## 👨‍🏫 Author
