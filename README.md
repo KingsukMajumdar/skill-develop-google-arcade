@@ -33,7 +33,7 @@ This repository contains comprehensive solutions, scripts, and documentation for
 | 2 | Cloud Run Functions: Qwik Start - Command Line | GSP080 | [🔗 Launch Lab](https://www.skills.google/games/6875/labs/42698) | [📄 readGSP080.md](./GSP080/readGSP080.md) |
 | 3 | Build a Serverless App with Cloud Run that Creates PDF Files | GSP644 | [🔗 Launch Lab](https://www.skills.google/games/6875/labs/42699) | [📄 readGSP644.md](./GSP644/readGSP644.md) |
 | 4 | Cloud Monitoring: Qwik Start | GSP089 | [🔗 Launch Lab](https://www.skills.google/games/6876/labs/42703) | [📄 *Commming Soon*](#) |
-| 5 | *Coming Soon* | GSP*** | [🔗 Launch Lab](#) | [📄 Documentation](#) |
+| 5 | Network and Apply Firewall Rules | GSP159 | [🔗 Launch Lab](https://www.skills.google/games/6876/labs/42704) | [📄 *Commming Soon*](#) |
 
 > **Note:** This table will be continuously updated as more labs are completed and documented.
 
